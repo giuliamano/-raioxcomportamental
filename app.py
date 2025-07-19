@@ -3,6 +3,7 @@ import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
+import json
 
 st.set_page_config(page_title="Raio-X Comportamental", layout="centered")
 
@@ -86,11 +87,12 @@ for pensamento in pensamentos:
 
 st.markdown("---")
 
-# Função para salvar no Google Sheets
+# Função para salvar no Google Sheets usando secrets
 def salvar_resposta():
     try:
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-        creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+        secret_dict = st.secrets["gcp_service_account"]
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(secret_dict, scope)
         client = gspread.authorize(creds)
 
         sheet = client.open("Raio-X Comportamental - Respostas").sheet1
