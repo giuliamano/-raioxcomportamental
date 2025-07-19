@@ -10,14 +10,6 @@ import json
 
 st.set_page_config(page_title="Raio-X Comportamental", layout="centered")
 
-st.markdown(
-    """
-    <style>
-        body { background-color: #f9f3e8; }
-        .main { background-color: #f9f3e8; }
-    </style>
-    """, unsafe_allow_html=True
-)
 aplicar_estilo()
 st.title("📋 Raio-X Comportamental")
 st.markdown("""Olá! Eu sou a **nutricionista Giulia Mano**. Este questionário foi desenvolvido para ajudar você a entender melhor seus padrões alimentares e pensamentos que podem estar interferindo nos seus resultados.
