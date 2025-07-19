@@ -35,23 +35,38 @@ st.markdown("---")
 # Perguntas - Comportamentos Alimentares
 st.subheader("🍽️ Comportamentos Alimentares")
 comportamentos = [
-    "Costumo comer quando estou entediado(a).",
-    "A comida me conforta quando estou triste, ansioso(a) ou frustrado(a).",
+    "Estar com alguém que está comendo me dá frequentemente vontade de comer também.",
+    "Quando me sinto tenso(a) ou estressado(a), frequentemente sinto que preciso comer.",
+    "Entre as refeições principais, eu frequentemente belisco pedaços de alimentos. Ex: abro a geladeira, pego umas uvas e como andando.",
+    "Eu conscientemente me controlo nas refeições para evitar ganhar peso.",
+    "Se a comida me parece apetitosa, como mais do que o habitual.",
+    "Se meu peso aumenta, como menos do que o habitual.",
+    "Se vejo ou sinto o aroma de algo muito gostoso, sinto um desejo muito forte de comer.",
+    "Se tenho alguma coisa muito saborosa para comer, como-a de imediato.",
+    "Durante as refeições, controlo a quantidade do que como.",
+    "Tenho desejo de comer quando estou procrastinando algo.",
+    "Consigo deixar de comer alimentos muito apetitosos.",
+    "Levo em consideração meus objetivos e valores quando escolho o que vou comer.",
+    "Quando preparo uma refeição, costumo petiscar alguma coisa.",
+    "Eu deliberadamente consumo pequenas porções para controlar meu peso.",
+    "Comi mesmo sem estar com fome porque estava entediado(a).",
+    "Comi mesmo sem estar com fome porque estava me sentindo ansioso(a), triste ou estressado(a).",
     "Sinto que mereço comer algo gostoso depois de um dia difícil.",
     "Como mesmo sem fome quando estou sobrecarregado(a) ou sem tempo.",
     "Evito desperdiçar comida mesmo quando estou satisfeito(a).",
     "Sinto que não consigo parar de comer certos alimentos, mesmo sem fome.",
-    "Tenho dificuldade em recusar comida quando insistem, mesmo sem querer.",
+    "Tenho dificuldade em recusar comida quando insistem.",
     "Como mais do que quero só porque paguei ou é uma ocasião especial.",
-    "Quando estou em eventos sociais, como para agradar ou acompanhar os outros.",
-    "Faço escolhas alimentares diferentes quando estou com outras pessoas."
+    "Quando estou em eventos sociais, como para acompanhar os outros."
 ]
+
 
 opcoes_comportamento = ["Nunca", "Às vezes", "Frequentemente", "Quase sempre"]
 respostas_comportamento = []
 
-for pergunta in comportamentos:
-    resposta = st.radio(pergunta, opcoes_comportamento, key=pergunta)
+
+for i, pergunta in enumerate(comportamentos):
+    resposta = st.radio(pergunta, opcoes_comportamento, key=f"comp_{i}")
     respostas_comportamento.append(resposta)
 
 st.markdown("---")
