@@ -75,10 +75,6 @@ st.markdown("---")
 st.subheader("🧠 Pensamentos Sabotadores")
 st.markdown("Esses são **pensamentos comuns que podem atrapalhar** seus resultados. Se identificar com algum deles já é um grande passo.")
 
-# Pensamentos sabotadores
-st.subheader("🧠 Pensamentos Sabotadores")
-st.markdown("Esses são **pensamentos comuns que podem atrapalhar** seus resultados. Se identificar com algum deles já é um grande passo.")
-
 pensamentos = [
     "Já pensei: 'Já que comi um pedaço, agora vou comer tudo e recomeço amanhã'.",
     "Já pensei: 'Estou tão sem tempo, não consigo seguir nada agora.'",
