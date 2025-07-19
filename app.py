@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import datetime
 import gspread
+from config.estilo import aplicar_estilo
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 import json
@@ -17,7 +18,7 @@ st.markdown(
     </style>
     """, unsafe_allow_html=True
 )
-
+aplicar_estilo()
 st.title("📋 Raio-X Comportamental")
 st.markdown("""Olá! Eu sou a **nutricionista Giulia Mano**. Este questionário foi desenvolvido para ajudar você a entender melhor seus padrões alimentares e pensamentos que podem estar interferindo nos seus resultados.
 
