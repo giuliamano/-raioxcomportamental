@@ -123,3 +123,95 @@ if st.button("📨 Enviar respostas"):
             st.success("Respostas enviadas com sucesso! Obrigada por participar 💛")
     else:
         st.warning("Por favor, preencha todos os campos antes de enviar.")
+        # --- Etapa 5: Análise dos Resultados por Categoria ---
+
+# Mapear perguntas para categorias
+mapa_categorias = {
+    "Fome Emocional": [
+        "Costumo comer quando estou entediado(a).",
+        "A comida me conforta quando estou triste, ansioso(a) ou frustrado(a).",
+        "Sinto que mereço comer algo gostoso depois de um dia difícil.",
+        "Como mesmo sem fome quando estou sobrecarregado(a) ou sem tempo.",
+        "Tenho desejo de comer quando estou procrastinando algo.",
+        "Quando me sinto tenso(a) ou estressado(a), frequentemente sinto que preciso comer.",
+        "Comi mesmo sem estar com fome porque estava entediado(a).",
+        "Comi mesmo sem estar com fome porque estava me sentindo ansioso(a), triste ou estressado(a).",
+    ],
+    "Comer por Influência Externa": [
+        "Estar com alguém que está comendo me dá frequentemente vontade de comer também.",
+        "Se vejo ou sinto o aroma de algo muito gostoso, sinto um desejo muito forte de comer.",
+        "Se tenho alguma coisa muito saborosa para comer, como-a de imediato.",
+        "Quando preparo uma refeição, costumo petiscar alguma coisa.",
+        "Se a comida me parece apetitosa, como mais do que o habitual.",
+        "Quando estou em eventos sociais, como para acompanhar os outros.",
+        "Tenho dificuldade em recusar comida quando insistem.",
+        "Entre as refeições principais, eu frequentemente belisco pedaços de alimentos.",
+    ],
+    "Autocontrole e Valores": [
+        "Eu conscientemente me controlo nas refeições para evitar ganhar peso.",
+        "Se meu peso aumenta, como menos do que o habitual.",
+        "Durante as refeições, controlo a quantidade do que como.",
+        "Consigo deixar de comer alimentos muito apetitosos.",
+        "Levo em consideração meus objetivos e valores quando escolho o que vou comer.",
+        "Eu deliberadamente consumo pequenas porções para controlar meu peso.",
+    ]
+}
+
+# Converter respostas em valores numéricos
+valores = {
+    "Nunca": 0,
+    "Às vezes": 1,
+    "Frequentemente": 2,
+    "Quase sempre": 3
+}
+
+respostas_dict = dict(zip(comportamentos, respostas_comportamento))
+
+medias = {}
+for categoria, perguntas in mapa_categorias.items():
+    soma = 0
+    total = 0
+    for pergunta in perguntas:
+        resposta = respostas_dict.get(pergunta)
+        if resposta is not None:
+            soma += valores.get(resposta, 0)
+            total += 1
+    medias[categoria] = round(soma / total, 2) if total > 0 else 0
+
+# --- Exibir Resultados com interpretação ---
+st.markdown("## 📊 Sua Análise Comportamental")
+st.write("Abaixo está um resumo da sua pontuação por categoria. Esses dados ajudam a identificar padrões que podem estar influenciando sua alimentação.")
+
+interpretacao_categoria = {
+    "Fome Emocional": """
+**Fome Emocional** refere-se ao impulso de comer em resposta a emoções — como estresse, tristeza, ansiedade ou tédio — e não à fome física.
+
+- **Pontuação baixa (0–1):** você demonstra equilíbrio ao lidar com emoções sem recorrer à comida.
+- **Pontuação média (1.1–2):** indica que, às vezes, a comida é usada como válvula de escape. Isso é comum e pode ser trabalhado com estratégias práticas.
+- **Pontuação alta (2.1–3):** a alimentação pode estar sendo usada com frequência para regular emoções. Isso merece atenção, mas é totalmente possível de ser transformado com apoio e consciência.
+""",
+    "Comer por Influência Externa": """
+**Comer por Influência Externa** acontece quando comemos mais por estímulos do ambiente do que por necessidade física — como cheiro, visão de comida, pressão social ou hábitos automáticos.
+
+- **Pontuação baixa (0–1):** você tende a se guiar bem pelos seus sinais internos de fome e saciedade.
+- **Pontuação média (1.1–2):** mostra que alguns estímulos externos influenciam sua alimentação.
+- **Pontuação alta (2.1–3):** o ambiente pode estar determinando grande parte do seu comportamento alimentar. Pequenas mudanças podem ter grande impacto.
+""",
+    "Autocontrole e Valores": """
+**Autocontrole e Valores** refletem o quanto suas escolhas alimentares estão alinhadas aos seus objetivos, valores pessoais e autorregulação.
+
+- **Pontuação baixa (0–1):** pode haver dificuldade em aplicar escolhas conscientes e consistentes.
+- **Pontuação média (1.1–2):** você está no caminho, com espaço para fortalecimento do autocontrole.
+- **Pontuação alta (2.1–3):** você demonstra consciência e alinhamento entre seus valores e comportamento alimentar. Muito positivo!
+"""
+}
+
+for categoria, media in medias.items():
+    st.markdown(f"### 🔸 {categoria}")
+    st.markdown(f"**Sua pontuação média:** `{media}`")
+    st.markdown(interpretacao_categoria[categoria])
+    st.markdown("---")
+
+# Aviso sobre validação científica
+st.info("🔍 **Este questionário ainda não foi validado cientificamente em estudos publicados**, mas foi baseado em instrumentos previamente validados na literatura. Os resultados não têm valor diagnóstico, mas funcionam como um guia valioso para reflexões e acompanhamento nutricional.")
+
