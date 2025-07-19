@@ -114,6 +114,64 @@ def salvar_resposta():
     except Exception as e:
         st.error(f"Erro ao salvar na planilha: {e}")
         return False
+# Função para converter respostas em valores
+def converter_respostas(respostas, opcoes):
+    return [opcoes.index(r) for r in respostas]
+
+# Dicionário de categorias e suas perguntas correspondentes (índices)
+categorias = {
+    "Fome Emocional": [0, 1, 2, 3, 9],
+    "Comer por Influência Externa": [6, 7, 8, 4, 5],
+    "Autocontrole e Valores": [10, 11, 12, 13, 14]
+}
+
+explicacoes = {
+    "Fome Emocional": {
+        "baixa": "Você demonstra baixo envolvimento com a alimentação emocional, o que é um ótimo sinal de equilíbrio emocional ao comer.",
+        "media": "Você apresenta alguns sinais de alimentação emocional. Vale observar se há padrões recorrentes.",
+        "alta": "Há forte relação entre suas emoções e o ato de comer. Identificar isso é um passo importante para melhorar sua relação com a comida."
+    },
+    "Comer por Influência Externa": {
+        "baixa": "Você parece pouco influenciado(a) pelo ambiente ou outras pessoas ao comer. Ótimo sinal de autonomia alimentar.",
+        "media": "Você mostra certa influência do ambiente ou do contexto social nas suas escolhas. Atenção a isso em situações repetidas.",
+        "alta": "Seu comportamento alimentar parece muito influenciado pelo ambiente ou pela pressão social. Podemos trabalhar estratégias para fortalecer sua autonomia."
+    },
+    "Autocontrole e Valores": {
+        "baixa": "Você demonstra baixo autocontrole ou pouca conexão com seus objetivos ao comer. Podemos desenvolver estratégias para isso.",
+        "media": "Você mostra certo equilíbrio entre prazer e autocontrole. Podemos explorar mais seus valores pessoais.",
+        "alta": "Você tem bom controle sobre suas escolhas alimentares e parece conectado(a) aos seus valores. Excelente!"
+    }
+}
+
+# Exibir análise apenas se todas as perguntas foram respondidas
+if nome and email and celular and len(respostas_comportamento) == 15:
+    respostas_numericas = converter_respostas(respostas_comportamento, opcoes_comportamento)
+
+    st.subheader("🔎 Análise do seu perfil alimentar")
+
+    for categoria, indices in categorias.items():
+        pontuacoes = [respostas_numericas[i] for i in indices]
+        media = sum(pontuacoes) / len(pontuacoes)
+
+        if media < 1.0:
+            nivel = "baixa"
+        elif media < 2.0:
+            nivel = "media"
+        else:
+            nivel = "alta"
+
+        explicacao = explicacoes[categoria][nivel]
+
+        st.markdown(f"### {categoria}")
+        st.markdown(f"**Sua média:** {media:.1f}")
+        st.markdown(f"{explicacao}")
+        st.markdown("---")
+
+    st.markdown(
+        "_Este questionário foi criado com base em instrumentos validados cientificamente, "
+        "mas ainda não passou por validação formal como um todo. Portanto, os resultados "
+        "devem ser usados como ferramenta de autoconhecimento e não como diagnóstico._"
+    )
 
 # Botão de envio
 if st.button("📨 Enviar respostas"):
