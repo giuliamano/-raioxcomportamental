@@ -1,5 +1,8 @@
 
 import streamlit as st
+import pandas as pd
+import datetime
+st.write("CLIENT EMAIL:", st.secrets["gcp_service_account"].get("client_email", "Chave não encontrada"))
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
