@@ -75,15 +75,19 @@ st.markdown("---")
 st.subheader("🧠 Pensamentos Sabotadores")
 st.markdown("Esses são **pensamentos comuns que podem atrapalhar** seus resultados. Se identificar com algum deles já é um grande passo.")
 
+# Pensamentos sabotadores
+st.subheader("🧠 Pensamentos Sabotadores")
+st.markdown("Esses são **pensamentos comuns que podem atrapalhar** seus resultados. Se identificar com algum deles já é um grande passo.")
+
 pensamentos = [
     "Já pensei: 'Já que comi um pedaço, agora vou comer tudo e recomeço amanhã'.",
     "Já pensei: 'Estou tão sem tempo, não consigo seguir nada agora.'",
-    "Pensei: 'Não posso desperdiçar, então vou comer mesmo sem fome.'",
-    "Me senti obrigado(a) a comer porque insistiram, mesmo sem querer.",
-    "Pensei: 'Já paguei por isso, preciso aproveitar.'",
-    "Comi algo porque era uma ocasião especial, mesmo sem vontade.",
-    "Pensei: 'Já que não estou fazendo tudo certo, não adianta tentar.'",
-    "Pensei: 'Depois eu compenso isso.'",
+    "Já pensei: 'Não posso desperdiçar, então vou comer mesmo sem fome.'",
+    "Me senti obrigado(a) a comer porque insistiram, mesmo sem querer tanto.",
+    "Já pensei: 'Já que paguei por isso, preciso aproveitar.'",
+    "Comi em maior quantidade só porque era uma ocasião especial ou algo que não como frequentemente.",
+    "Já pensei: 'Já que não estou fazendo tudo certo, não tem problema comer isso.'",
+    "Já pensei: 'Depois eu compenso isso.'",
     "Acreditei que merecia comer algo porque tive um dia ruim.",
     "Me deixei levar pela ideia de que 'é só hoje'."
 ]
@@ -91,9 +95,10 @@ pensamentos = [
 opcoes_pensamentos = ["Não me identifico", "Me identifico um pouco", "Me identifico muito"]
 respostas_pensamentos = []
 
-for pensamento in pensamentos:
-    resposta = st.radio(pensamento, opcoes_pensamentos, key=pensamento)
+for i, pensamento in enumerate(pensamentos):
+    resposta = st.radio(pensamento, opcoes_pensamentos, key=f"pens_{i}")
     respostas_pensamentos.append(resposta)
+
 
 st.markdown("---")
 
