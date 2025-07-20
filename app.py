@@ -120,7 +120,7 @@ if st.session_state.pagina <= total_paginas:
 
 elif st.session_state.pagina == total_paginas + 1:
     st.subheader("🧠 Pensamentos Sabotadores")
-    st.markdown("Esses são **pensamentos comuns que podem atrapalhar** seus resultados. Se identificar com algum deles já é um grande passo.")
+    st.markdown("Esses são **pensamentos automáticos comuns que podem sequenciar comportamentos contrários aos seus objetivos**. Identificá-los é o primeiro passo")
 
     for i, pensamento in enumerate(pensamentos_sabotadores):
         resposta = st.radio(pensamento, opcoes_sabotagem, key=f"pens_{i}")
@@ -173,7 +173,7 @@ elif st.session_state.pagina == total_paginas + 1:
 
 - **Pontuação baixa (0–1):** você tende a se guiar bem pelos seus sinais internos. de fome e saciedade.
 - **Pontuação média (1.1–2):** mostra que alguns estímulos externos influenciam sua alimentação.
-- **Pontuação alta (2.1–3):** o ambiente pode estar determinando grande parte do seu comportamento alimentar. Pequenas mudanças bem direcionadas podem ter grande impacto.
+- **Pontuação alta (2.1–3):** o ambiente pode estar determinando grande parte do seu comportamento alimentar. Pequenas mudanças bem direcionadas podem ter grande impacto!
 """,
             "Autocontrole e Valores": """
 **Autocontrole e Valores** refletem o quanto suas escolhas alimentares estão alinhadas aos seus objetivos e autorregulação.
