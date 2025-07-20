@@ -3,27 +3,12 @@ import streamlit as st
 def aplicar_estilo():
     st.markdown("""
         <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap');
 
-        html, body, [class*="css"]  {
+        html, body, [class*="css"] {
             font-family: 'Playfair Display', serif;
             color: #3e3e3e;
-        }
-
-        /* Fundo com imagem e suavidade */
-        .stApp {
-            background-image: url('https://i.imgur.com/YAr2S9r.jpg');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        /* Container com leve transparência */
-        .main > div {
-            background-color: rgba(255, 255, 255, 0.88);
-            padding: 2rem;
-            border-radius: 10px;
+            background-color: #f8f3ec;
         }
 
         /* Cabeçalhos */
@@ -32,12 +17,12 @@ def aplicar_estilo():
         }
 
         /* Campos de input */
-        input, textarea {
+        input {
             background-color: #fff !important;
             border-radius: 6px !important;
         }
 
-        /* Botões */
+        /* Botões de envio */
         .stButton > button {
             background-color: #d9c4aa;
             color: #3e3e3e;
@@ -53,12 +38,28 @@ def aplicar_estilo():
             color: #000000;
         }
 
-        /* Perguntas */
+        /* Perguntas em radio */
         .stRadio > div {
             background-color: #f2ebe3;
             border-radius: 10px;
             padding: 0.8rem;
             margin-bottom: 1rem;
+        }
+
+        /* Estilo do botão selecionado */
+        div[data-baseweb="radio"] label[data-selected="true"] {
+            background-color: #d9c4aa;
+            color: #000000 !important;
+            border-radius: 8px;
+            padding: 6px 12px;
+        }
+
+        /* Estilo do botão não selecionado */
+        div[data-baseweb="radio"] label {
+            background-color: #f8f3ec;
+            color: #3e3e3e;
+            border-radius: 8px;
+            padding: 6px 12px;
         }
 
         label {
