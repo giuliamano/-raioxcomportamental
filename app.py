@@ -42,8 +42,12 @@ celular = st.text_input("Celular (WhatsApp)")
 st.markdown("---")
 
 # Perguntas principais
-st.subheader("🍽️ Comportamentos Alimentares")
-comportamentos = [
+# Etapa 4 - Perguntas com visual melhorado e páginas separadas
+
+import streamlit as st
+
+# Organizar as perguntas principais em blocos
+perguntas_comportamento = [
     "Estar com alguém que está comendo me dá frequentemente vontade de comer também.",
     "Quando me sinto tenso(a) ou estressado(a), frequentemente sinto que preciso comer.",
     "Entre as refeições principais, eu frequentemente belisco pedaços de alimentos. Ex: abro a geladeira, pego umas uvas e como andando.",
@@ -69,16 +73,7 @@ comportamentos = [
     "Quando estou em eventos sociais, como para acompanhar os outros."
 ]
 
-opcoes_comportamento = ["Nunca", "Às vezes", "Frequentemente", "Quase sempre"]
-respostas_comportamento = [st.radio(pergunta, opcoes_comportamento, key=f"comp_{i}") for i, pergunta in enumerate(comportamentos)]
-
-st.markdown("---")
-
-# Pensamentos sabotadores
-st.subheader("🧠 Pensamentos Sabotadores")
-st.markdown("Esses são **pensamentos comuns que podem atrapalhar** seus resultados. Se identificar com algum deles já é um grande passo.")
-
-pensamentos = [
+pensamentos_sabotadores = [
     "Já pensei: 'Já que comi um pedaço, agora vou comer tudo e recomeço amanhã'.",
     "Já pensei: 'Estou tão sem tempo, não consigo seguir nada agora.'",
     "Já pensei: 'Não posso desperdiçar, então vou comer mesmo sem fome.'",
@@ -91,8 +86,57 @@ pensamentos = [
     "Me deixei levar pela ideia de que 'é só hoje'."
 ]
 
-opcoes_pensamentos = ["Não me identifico", "Me identifico um pouco", "Me identifico muito"]
-respostas_pensamentos = [st.radio(pensamento, opcoes_pensamentos, key=f"pens_{i}") for i, pensamento in enumerate(pensamentos)]
+opcoes_freq = ["Nunca", "Às vezes", "Frequentemente", "Quase sempre"]
+opcoes_sabotagem = ["Não me identifico", "Me identifico um pouco", "Me identifico muito"]
+
+# Criar páginas
+total_perguntas = len(perguntas_comportamento)
+por_pagina = 6
+total_paginas = (total_perguntas + por_pagina - 1) // por_pagina
+
+# Guardar respostas no session_state
+if "pagina" not in st.session_state:
+    st.session_state.pagina = 1
+if "respostas_comportamento" not in st.session_state:
+    st.session_state.respostas_comportamento = [""] * total_perguntas
+if "respostas_pensamentos" not in st.session_state:
+    st.session_state.respostas_pensamentos = [""] * len(pensamentos_sabotadores)
+
+# Mostrar perguntas por página
+inicio = (st.session_state.pagina - 1) * por_pagina
+fim = min(inicio + por_pagina, total_perguntas)
+
+st.subheader(f"🍽️ Comportamentos Alimentares (Página {st.session_state.pagina} de {total_paginas})")
+
+for i in range(inicio, fim):
+    resposta = st.radio(perguntas_comportamento[i], opcoes_freq, key=f"comp_{i}")
+    st.session_state.respostas_comportamento[i] = resposta
+
+# Botões de navegação
+col1, col2, col3 = st.columns([1, 1, 2])
+with col1:
+    if st.session_state.pagina > 1:
+        if st.button("⬅️ Voltar"):
+            st.session_state.pagina -= 1
+with col2:
+    if st.session_state.pagina < total_paginas:
+        if st.button("➡️ Próximo"):
+            st.session_state.pagina += 1
+with col3:
+    if st.session_state.pagina == total_paginas:
+        if st.button("🧠 Avançar para Pensamentos Sabotadores"):
+            st.session_state.pagina += 1
+
+# Pensamentos Sabotadores (última "página")
+if st.session_state.pagina == total_paginas + 1:
+    st.subheader("🧠 Pensamentos Sabotadores")
+    st.markdown("Esses são **pensamentos comuns que podem atrapalhar** seus resultados. Se identificar com algum deles já é um grande passo.")
+
+    for i, pensamento in enumerate(pensamentos_sabotadores):
+        resposta = st.radio(pensamento, opcoes_sabotagem, key=f"pens_{i}")
+        st.session_state.respostas_pensamentos[i] = resposta
+
+
 
 st.markdown("---")
 
