@@ -5,18 +5,25 @@ def aplicar_estilo():
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
 
-        /* Fundo com textura bege sofisticada */
-        body {
-            background-image: url('https://i.imgur.com/YAr2S9r.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-
-        html, body, [class*="css"] {
+        html, body, [class*="css"]  {
             font-family: 'Playfair Display', serif;
             color: #3e3e3e;
-            background-color: rgba(255, 255, 255, 0.85);
+        }
+
+        /* Fundo com imagem e suavidade */
+        .stApp {
+            background-image: url('https://i.imgur.com/YAr2S9r.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Container com leve transparência */
+        .main > div {
+            background-color: rgba(255, 255, 255, 0.88);
+            padding: 2rem;
+            border-radius: 10px;
         }
 
         /* Cabeçalhos */
@@ -25,7 +32,7 @@ def aplicar_estilo():
         }
 
         /* Campos de input */
-        input {
+        input, textarea {
             background-color: #fff !important;
             border-radius: 6px !important;
         }
