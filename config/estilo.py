@@ -1,59 +1,39 @@
 import streamlit as st
 
 def aplicar_estilo():
-    st.markdown(
-        """
+    st.markdown("""
         <style>
-            /* Fundo geral da página */
+            /* Fundo geral da aplicação */
             .stApp {
                 background-color: #f9f3e8;
             }
-
-            /* Título e subtítulos */
+            /* Container principal */
+            section[data-testid="stAppViewContainer"] > div {
+                background-color: #ffffff;
+                border-radius: 12px;
+                padding: 2rem;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            }
+            /* Cabeçalhos */
             h1, h2, h3 {
-                color: #5e412f;
+                color: #5e412f !important;
                 font-family: 'Segoe UI', sans-serif;
             }
-
-            /* Caixa branca em volta dos inputs */
-            .block-container {
-                background-color: #ffffff;
-                padding: 2rem;
-                border-radius: 12px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-            }
-
             /* Botões */
-            .stButton>button {
+            .stButton > button {
                 background-color: #c7a17a;
-                color: white;
-                border: none;
-                padding: 0.6rem 1.2rem;
+                color: #ffffff;
                 border-radius: 6px;
+                padding: 0.6rem 1.2rem;
                 font-size: 1rem;
+                font-weight: bold;
             }
-
-            .stButton>button:hover {
+            .stButton > button:hover {
                 background-color: #a67c52;
             }
-
-            /* Inputs */
-            input, textarea {
+            /* Inputs e radio */
+            input, textarea, .stRadio > div {
                 background-color: #fffaf2 !important;
             }
-
-            /* Rádio buttons */
-            .stRadio > div {
-                background-color: #fff;
-                padding: 0.5rem;
-                border-radius: 8px;
-            }
-
-            /* Mensagens de sucesso e info */
-            .stAlert {
-                border-radius: 8px;
-            }
         </style>
-        """,
-        unsafe_allow_html=True
-    )
+        """, unsafe_allow_html=True)
