@@ -18,8 +18,8 @@ st.markdown(
             Olá! Prazer, meu nome é <strong>Giulia</strong>. Sou nutricionista e desenvolvi este questionário para ajudar você a entender melhor seus padrões alimentares e pensamentos que podem estar interferindo nos seus resultados.
         </p>
         <p style="font-size: 1rem; color: #6a5d4d;">
-            <strong>Importante:</strong> Não existe resposta certa ou errada.  O mais importante é você se reconhecer com sinceridade.<br>
-            Caso alguma frase não represente exatamente o que você pensa, mas se aproxima, selecione a que <strong>mesmo assim </strong>.
+            <strong>Importante:</strong> Não existe resposta certa ou errada. O mais importante é você se reconhecer com sinceridade.<br>
+            Caso alguma frase não represente exatamente o que você pensa, mas se aproxima, selecione-a mesmo assim.
         </p>
         <p style="margin-top: 1rem;">
             📲 Instagram: <a href="https://instagram.com/nutrigiuliamano" target="_blank">@nutrigiuliamano</a><br>
@@ -91,6 +91,10 @@ if "respostas_comportamento" not in st.session_state:
 if "respostas_pensamentos" not in st.session_state:
     st.session_state.respostas_pensamentos = [""] * len(pensamentos_sabotadores)
 
+# Botões de navegação
+if "navegar_para" not in st.session_state:
+    st.session_state.navegar_para = None
+
 inicio = (st.session_state.pagina - 1) * por_pagina
 fim = min(inicio + por_pagina, len(perguntas_comportamento))
 
@@ -102,17 +106,15 @@ if st.session_state.pagina <= total_paginas:
 
     col1, col2, col3 = st.columns([1, 1, 2])
     with col1:
-        if st.session_state.pagina > 1:
-            if st.button("⬅️ Voltar"):
-                st.session_state.pagina -= 1
+        if st.button("⬅️ Voltar"):
+            st.session_state.navegar_para = st.session_state.pagina - 1
     with col2:
-        if st.session_state.pagina < total_paginas:
-            if st.button("➡️ Próximo"):
-                st.session_state.pagina += 1
+        if st.button("➡️ Próximo"):
+            st.session_state.navegar_para = st.session_state.pagina + 1
     with col3:
         if st.session_state.pagina == total_paginas:
             if st.button("🧠 Avançar para Pensamentos Sabotadores"):
-                st.session_state.pagina += 1
+                st.session_state.navegar_para = total_paginas + 1
 
 elif st.session_state.pagina == total_paginas + 1:
     st.subheader("🧠 Pensamentos Sabotadores")
@@ -188,3 +190,9 @@ elif st.session_state.pagina == total_paginas + 1:
             st.markdown("---")
 
         st.info("🔍 Este questionário ainda não foi validado cientificamente em estudos publicados, mas foi baseado em instrumentos previamente validados na literatura. Os resultados não têm valor diagnóstico, mas funcionam como um guia valioso para reflexões e acompanhamento nutricional")
+
+# Aplicar a navegação no final
+if st.session_state.navegar_para:
+    st.session_state.pagina = st.session_state.navegar_para
+    st.session_state.navegar_para = None
+    st.rerun()
