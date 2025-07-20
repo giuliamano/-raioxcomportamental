@@ -18,8 +18,8 @@ st.markdown(
             Olá! Prazer, meu nome é <strong>Giulia</strong>. Sou nutricionista e desenvolvi este questionário para ajudar você a entender melhor seus padrões alimentares e pensamentos que podem estar interferindo nos seus resultados.
         </p>
         <p style="font-size: 1rem; color: #6a5d4d;">
-            <strong>Importante:</strong> Não existe resposta certa ou errada. O mais importante é você se reconhecer com sinceridade.<br>
-            Caso alguma frase não represente exatamente o que você pensa, mas se aproxima, selecione a que <strong>mesmo assim</strong>.
+            <strong>Importante:</strong> Não existe resposta certa ou errada.  O mais importante é você se reconhecer com sinceridade.<br>
+            Caso alguma frase não represente exatamente o que você pensa, mas se aproxima, selecione a que <strong>mais se aproxima</strong>.
         </p>
         <p style="margin-top: 1rem;">
             📲 Instagram: <a href="https://instagram.com/nutrigiuliamano" target="_blank">@nutrigiuliamano</a><br>
@@ -37,7 +37,7 @@ email = st.text_input("E-mail")
 celular = st.text_input("Celular (WhatsApp)")
 st.markdown("---")
 
-# Perguntas
+# Perguntas principais
 perguntas_comportamento = [
     "Estar com alguém que está comendo me dá vontade de comer também.",
     "Quando me sinto tenso(a) ou estressado(a), frequentemente sinto necessidade de comer.",
@@ -80,25 +80,25 @@ pensamentos_sabotadores = [
 opcoes_freq = ["Nunca", "Às vezes", "Frequentemente", "Quase sempre"]
 opcoes_sabotagem = ["Não me identifico", "Me identifico um pouco", "Me identifico muito"]
 
-# Estado inicial
+# Estados iniciais
+por_pagina = 6
+total_paginas = (len(perguntas_comportamento) + por_pagina - 1) // por_pagina
+
 if "pagina" not in st.session_state:
     st.session_state.pagina = 1
 if "respostas_comportamento" not in st.session_state:
     st.session_state.respostas_comportamento = [""] * len(perguntas_comportamento)
 if "respostas_pensamentos" not in st.session_state:
     st.session_state.respostas_pensamentos = [""] * len(pensamentos_sabotadores)
-if "enviado" not in st.session_state:
-    st.session_state.enviado = False
+if "respostas_enviadas" not in st.session_state:
+    st.session_state.respostas_enviadas = False
 
-por_pagina = 6
-total_paginas = (len(perguntas_comportamento) + por_pagina - 1) // por_pagina
+inicio = (st.session_state.pagina - 1) * por_pagina
+fim = min(inicio + por_pagina, len(perguntas_comportamento))
 
-# Página de perguntas comportamentais
+# Página de perguntas principais
 if st.session_state.pagina <= total_paginas:
     st.subheader(f"🍽️ Comportamentos Alimentares (Página {st.session_state.pagina} de {total_paginas})")
-    inicio = (st.session_state.pagina - 1) * por_pagina
-    fim = min(inicio + por_pagina, len(perguntas_comportamento))
-
     for i in range(inicio, fim):
         resposta = st.radio(perguntas_comportamento[i], opcoes_freq, key=f"comp_{i}")
         st.session_state.respostas_comportamento[i] = resposta
@@ -108,17 +108,14 @@ if st.session_state.pagina <= total_paginas:
         if st.session_state.pagina > 1:
             if st.button("⬅️ Voltar"):
                 st.session_state.pagina -= 1
-                st.stop()
     with col2:
         if st.session_state.pagina < total_paginas:
             if st.button("➡️ Próximo"):
                 st.session_state.pagina += 1
-                st.stop()
     with col3:
         if st.session_state.pagina == total_paginas:
             if st.button("🧠 Avançar para Pensamentos Sabotadores"):
                 st.session_state.pagina += 1
-                st.stop()
 
 # Página de pensamentos sabotadores
 elif st.session_state.pagina == total_paginas + 1:
@@ -143,15 +140,15 @@ elif st.session_state.pagina == total_paginas + 1:
                 data = [datetime.now().strftime("%d/%m/%Y %H:%M:%S"), nome, email, celular] + st.session_state.respostas_comportamento + st.session_state.respostas_pensamentos
                 sheet.append_row(data)
 
+                st.session_state.respostas_enviadas = True
                 st.success("Respostas enviadas com sucesso! Obrigada por participar 💛")
-                st.session_state.enviado = True
             except Exception as e:
                 st.error(f"Erro ao salvar na planilha: {e}")
         else:
             st.warning("Por favor, preencha todos os campos antes de enviar.")
 
-# Análise só aparece após envio
-if st.session_state.enviado:
+# Análise (somente após envio)
+if st.session_state.respostas_enviadas:
     st.subheader("🔍 Sua Análise Comportamental")
 
     valores = {"Nunca": 0, "Às vezes": 1, "Frequentemente": 2, "Quase sempre": 3}
@@ -195,4 +192,4 @@ if st.session_state.enviado:
         st.markdown(explicacoes[categoria])
         st.markdown("---")
 
-    st.info("🔍 Este questionário ainda não foi validado cientificamente em estudos publicados, mas foi baseado em instrumentos previamente validados na literatura. Os resultados não têm valor diagnóstico, mas funcionam como um guia valioso para reflexões e acompanhamento nutricional.")
+    st.info("🔍 Este questionário ainda não foi validado cientificamente em estudos publicados, mas foi baseado em instrumentos previamente validados na literatura. Os resultados não têm valor diagnóstico, mas funcionam como um guia valioso para reflexões e acompanhamento nutricional")
