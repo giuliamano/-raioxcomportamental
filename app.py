@@ -19,7 +19,7 @@ st.markdown(
         </p>
         <p style="font-size: 1rem; color: #6a5d4d;">
             <strong>Importante:</strong> Não existe resposta certa ou errada.  O mais importante é você se reconhecer com sinceridade.<br>
-            Caso alguma frase não represente exatamente o que você pensa, mas se aproxima, selecione a que <strong>mesmo assim </strong>.
+            Caso alguma frase não represente exatamente o que você pensa, mas se aproxima, selecione a que <strong>mais se aproxima</strong>.
         </p>
         <p style="margin-top: 1rem;">
             📲 Instagram: <a href="https://instagram.com/nutrigiuliamano" target="_blank">@nutrigiuliamano</a><br>
@@ -80,7 +80,7 @@ pensamentos_sabotadores = [
 opcoes_freq = ["Nunca", "Às vezes", "Frequentemente", "Quase sempre"]
 opcoes_sabotagem = ["Não me identifico", "Me identifico um pouco", "Me identifico muito"]
 
-# Páginação
+# Paginação
 por_pagina = 6
 total_paginas = (len(perguntas_comportamento) + por_pagina - 1) // por_pagina
 
@@ -97,7 +97,7 @@ fim = min(inicio + por_pagina, len(perguntas_comportamento))
 if st.session_state.pagina <= total_paginas:
     st.subheader(f"🍽️ Comportamentos Alimentares (Página {st.session_state.pagina} de {total_paginas})")
     for i in range(inicio, fim):
-        resposta = st.radio(perguntas_comportamento[i], opcoes_freq, key=f"comp_{i}")
+        resposta = st.radio(perguntas_comportamento[i], opcoes_freq, key=f"comp_{i}_{st.session_state.pagina}")
         st.session_state.respostas_comportamento[i] = resposta
 
     col1, col2, col3 = st.columns([1, 1, 2])
@@ -156,27 +156,9 @@ elif st.session_state.pagina == total_paginas + 1:
         }
 
         explicacoes = {
-            "Fome Emocional": """
-**Fome Emocional** refere-se ao impulso de comer em resposta a emoções — como estresse, tristeza, ansiedade ou tédio — e não à fome física.
-
-- **Pontuação baixa (0–1):** você demonstra equilíbrio ao lidar com emoções sem recorrer à comida.
-- **Pontuação média (1.1–2):** indica que, às vezes, a comida é usada como válvula de escape. Isso é comum e pode ser trabalhado!
-- **Pontuação alta (2.1–3):** a alimentação pode estar sendo usada com frequência para regular emoções. Isso merece atenção, mas é totalmente possível de ser transformado com dedicação e as estratégias certas.
-""",
-            "Comer por Influência Externa": """
-**Comer por Influência Externa** acontece quando comemos mais por estímulos do ambiente do que por necessidade física — como cheiro, visão de comida, pressão social ou hábitos automáticos.
-
-- **Pontuação baixa (0–1):** você tende a se guiar bem pelos seus sinais internos. de fome e saciedade.
-- **Pontuação média (1.1–2):** mostra que alguns estímulos externos influenciam sua alimentação.
-- **Pontuação alta (2.1–3):** o ambiente pode estar determinando grande parte do seu comportamento alimentar. Pequenas mudanças bem direcionadas podem ter grande impacto.
-""",
-            "Autocontrole e Valores": """
-**Autocontrole e Valores** refletem o quanto suas escolhas alimentares estão alinhadas aos seus objetivos e autorregulação.
-
-- **Pontuação baixa (0–1):** pode haver dificuldade em aplicar escolhas conscientes.
-- **Pontuação média (1.1–2):** você está no caminho, com espaço para fortalecimento do autocontrole.
-- **Pontuação alta (2.1–3):** você demonstra alinhamento entre seus valores e comportamento. Muito positivo!
-"""
+            "Fome Emocional": """...""",
+            "Comer por Influência Externa": """...""",
+            "Autocontrole e Valores": """..."""
         }
 
         for categoria, indices in categorias.items():
@@ -187,4 +169,4 @@ elif st.session_state.pagina == total_paginas + 1:
             st.markdown(explicacoes[categoria])
             st.markdown("---")
 
-        st.info("🔍 Este questionário ainda não foi validado cientificamente em estudos publicados, mas foi baseado em instrumentos previamente validados na literatura. Os resultados não têm valor diagnóstico, mas funcionam como um guia valioso para reflexões e acompanhamento nutricional")
+        st.info("🔍 Este questionário ainda não foi validado cientificamente em estudos publicados...")
