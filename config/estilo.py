@@ -1,59 +1,66 @@
-# Novo estilo.py
 import streamlit as st
 
 def aplicar_estilo():
-    st.markdown(
-        """
+    st.markdown("""
         <style>
-            @import url('https://fonts.googleapis.com/css2?family=Georgia&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
 
-            html, body, [class*="css"] {
-                font-family: 'Georgia', serif;
-                background-color: #f7f0e8;
-                color: #333333;
-            }
+        /* Fundo com textura bege sofisticada */
+        body {
+            background-image: url('https://i.imgur.com/YAr2S9r.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
 
-            .main {
-                background-color: #ffffff;
-                padding: 2rem;
-                border-radius: 10px;
-            }
+        html, body, [class*="css"] {
+            font-family: 'Playfair Display', serif;
+            color: #3e3e3e;
+            background-color: rgba(255, 255, 255, 0.85);
+        }
 
-            h1, h2, h3 {
-                color: #5e412f;
-            }
+        /* Cabeçalhos */
+        h1, h2, h3 {
+            color: #5e412f;
+        }
 
-            .stButton>button {
-                background-color: #bfa17b;
-                color: white;
-                font-weight: bold;
-                border-radius: 8px;
-                border: none;
-                padding: 0.6rem 1.2rem;
-                font-size: 1rem;
-            }
+        /* Campos de input */
+        input {
+            background-color: #fff !important;
+            border-radius: 6px !important;
+        }
 
-            .stButton>button:hover {
-                background-color: #a88966;
-                color: #fff;
-            }
+        /* Botões */
+        .stButton > button {
+            background-color: #d9c4aa;
+            color: #3e3e3e;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
 
-            .stRadio>div>label {
-                background-color: #fffaf3;
-                padding: 0.5rem 1rem;
-                border-radius: 6px;
-                border: 1px solid #e6d8c3;
-                margin-bottom: 0.3rem;
-                cursor: pointer;
-            }
+        .stButton > button:hover {
+            background-color: #c5b293;
+            color: #000000;
+        }
 
-            .stTextInput>div>div>input {
-                background-color: #fff;
-                border: 1px solid #d6c9b5;
-                padding: 0.5rem;
-                border-radius: 6px;
-            }
+        /* Perguntas */
+        .stRadio > div {
+            background-color: #f2ebe3;
+            border-radius: 10px;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        label {
+            font-size: 1rem !important;
+        }
+
+        /* Alertas */
+        .stAlert {
+            border-radius: 8px;
+        }
         </style>
-        """,
-        unsafe_allow_html=True
-    )
+    """, unsafe_allow_html=True)
