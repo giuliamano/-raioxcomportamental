@@ -104,9 +104,12 @@ if st.session_state.pagina <= total_paginas:
         perguntas_comportamento[i],
         opcoes_freq,
         key=f"comp_{i}",
-        index=opcoes_freq.index(st.session_state.respostas_comportamento[i]) if st.session_state.respostas_comportamento[i] in opcoes_freq else 0
+        index=opcoes_freq.index(st.session_state.respostas_comportamento[i])
+        if st.session_state.respostas_comportamento[i] in opcoes_freq
+        else 0
     )
     st.session_state.respostas_comportamento[i] = resposta
+
 
 
     col1, col2, col3 = st.columns([1, 1, 2])
