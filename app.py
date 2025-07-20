@@ -188,4 +188,4 @@ elif st.session_state.pagina == total_paginas + 1:
             st.markdown(explicacoes[categoria])
             st.markdown("---")
 
-        st.info("🔍 Este questionário ainda não foi validado cientificamente, mas foi baseado em instrumentos validados na literatura.")
+        st.info("🔍 Este questionário ainda não foi validado cientificamente em estudos publicados**, mas foi baseado em instrumentos previamente validados na literatura. Os resultados não têm valor diagnóstico, mas funcionam como um guia valioso para reflexões e acompanhamento nutricional")
