@@ -18,8 +18,8 @@ st.markdown(
             Olá! Prazer, meu nome é <strong>Giulia</strong>. Sou nutricionista e desenvolvi este questionário para ajudar você a entender melhor seus padrões alimentares e pensamentos que podem estar interferindo nos seus resultados.
         </p>
         <p style="font-size: 1rem; color: #6a5d4d;">
-            <strong>Importante:</strong> Não existe resposta certa ou errada. O mais importante é você se reconhecer com sinceridade.<br>
-            Caso alguma frase não represente exatamente o que você pensa, mas se aproxima, selecione-a mesmo assim.
+            <strong>Importante:</strong> Não existe resposta certa ou errada.  O mais importante é você se reconhecer com sinceridade.<br>
+            Caso alguma frase não represente exatamente o que você pensa, mas se aproxima, selecione a que <strong>mesmo assim </strong>.
         </p>
         <p style="margin-top: 1rem;">
             📲 Instagram: <a href="https://instagram.com/nutrigiuliamano" target="_blank">@nutrigiuliamano</a><br>
@@ -80,7 +80,7 @@ pensamentos_sabotadores = [
 opcoes_freq = ["Nunca", "Às vezes", "Frequentemente", "Quase sempre"]
 opcoes_sabotagem = ["Não me identifico", "Me identifico um pouco", "Me identifico muito"]
 
-# Páginação
+# Paginação
 por_pagina = 6
 total_paginas = (len(perguntas_comportamento) + por_pagina - 1) // por_pagina
 
@@ -90,10 +90,8 @@ if "respostas_comportamento" not in st.session_state:
     st.session_state.respostas_comportamento = [""] * len(perguntas_comportamento)
 if "respostas_pensamentos" not in st.session_state:
     st.session_state.respostas_pensamentos = [""] * len(pensamentos_sabotadores)
-
-# Botões de navegação
-if "navegar_para" not in st.session_state:
-    st.session_state.navegar_para = None
+if "enviado" not in st.session_state:
+    st.session_state.enviado = False
 
 inicio = (st.session_state.pagina - 1) * por_pagina
 fim = min(inicio + por_pagina, len(perguntas_comportamento))
@@ -106,15 +104,17 @@ if st.session_state.pagina <= total_paginas:
 
     col1, col2, col3 = st.columns([1, 1, 2])
     with col1:
-        if st.button("⬅️ Voltar"):
-            st.session_state.navegar_para = st.session_state.pagina - 1
+        if st.session_state.pagina > 1:
+            if st.button("⬅️ Voltar"):
+                st.session_state.pagina -= 1
     with col2:
-        if st.button("➡️ Próximo"):
-            st.session_state.navegar_para = st.session_state.pagina + 1
+        if st.session_state.pagina < total_paginas:
+            if st.button("➡️ Próximo"):
+                st.session_state.pagina += 1
     with col3:
         if st.session_state.pagina == total_paginas:
             if st.button("🧠 Avançar para Pensamentos Sabotadores"):
-                st.session_state.navegar_para = total_paginas + 1
+                st.session_state.pagina += 1
 
 elif st.session_state.pagina == total_paginas + 1:
     st.subheader("🧠 Pensamentos Sabotadores")
@@ -139,61 +139,55 @@ elif st.session_state.pagina == total_paginas + 1:
                 sheet.append_row(data)
 
                 st.success("Respostas enviadas com sucesso! Obrigada por participar 💛")
-                # Análise
-    if nome and email and celular and all(r in opcoes_freq for r in st.session_state.respostas_comportamento):
-        st.subheader("🔍 Sua Análise Comportamental")
+                st.session_state.enviado = True
+            except Exception as e:
+                st.error(f"Erro ao salvar na planilha: {e}")
+        else:
+            st.warning("Por favor, preencha todos os campos antes de enviar.")
 
-        valores = {"Nunca": 0, "Às vezes": 1, "Frequentemente": 2, "Quase sempre": 3}
-        respostas_numericas = [valores[r] for r in st.session_state.respostas_comportamento]
+# Mostrar análise somente se enviado com sucesso
+if st.session_state.enviado:
+    st.subheader("🔍 Sua Análise Comportamental")
 
-        categorias = {
-            "Fome Emocional": [1, 9, 14, 15, 16, 17],
-            "Comer por Influência Externa": [0, 2, 4, 6, 7, 12, 20, 22],
-            "Autocontrole e Valores": [3, 5, 8, 10, 11, 13]
-        }
+    valores = {"Nunca": 0, "Às vezes": 1, "Frequentemente": 2, "Quase sempre": 3}
+    respostas_numericas = [valores[r] for r in st.session_state.respostas_comportamento]
 
-        explicacoes = {
-            "Fome Emocional": """
+    categorias = {
+        "Fome Emocional": [1, 9, 14, 15, 16, 17],
+        "Comer por Influência Externa": [0, 2, 4, 6, 7, 12, 20, 22],
+        "Autocontrole e Valores": [3, 5, 8, 10, 11, 13]
+    }
+
+    explicacoes = {
+        "Fome Emocional": """
 **Fome Emocional** refere-se ao impulso de comer em resposta a emoções — como estresse, tristeza, ansiedade ou tédio — e não à fome física.
 
 - **Pontuação baixa (0–1):** você demonstra equilíbrio ao lidar com emoções sem recorrer à comida.
 - **Pontuação média (1.1–2):** indica que, às vezes, a comida é usada como válvula de escape. Isso é comum e pode ser trabalhado!
 - **Pontuação alta (2.1–3):** a alimentação pode estar sendo usada com frequência para regular emoções. Isso merece atenção, mas é totalmente possível de ser transformado com dedicação e as estratégias certas.
 """,
-            "Comer por Influência Externa": """
+        "Comer por Influência Externa": """
 **Comer por Influência Externa** acontece quando comemos mais por estímulos do ambiente do que por necessidade física — como cheiro, visão de comida, pressão social ou hábitos automáticos.
 
 - **Pontuação baixa (0–1):** você tende a se guiar bem pelos seus sinais internos. de fome e saciedade.
 - **Pontuação média (1.1–2):** mostra que alguns estímulos externos influenciam sua alimentação.
 - **Pontuação alta (2.1–3):** o ambiente pode estar determinando grande parte do seu comportamento alimentar. Pequenas mudanças bem direcionadas podem ter grande impacto.
 """,
-            "Autocontrole e Valores": """
+        "Autocontrole e Valores": """
 **Autocontrole e Valores** refletem o quanto suas escolhas alimentares estão alinhadas aos seus objetivos e autorregulação.
 
 - **Pontuação baixa (0–1):** pode haver dificuldade em aplicar escolhas conscientes.
 - **Pontuação média (1.1–2):** você está no caminho, com espaço para fortalecimento do autocontrole.
 - **Pontuação alta (2.1–3):** você demonstra alinhamento entre seus valores e comportamento. Muito positivo!
 """
-        }
+    }
 
-        for categoria, indices in categorias.items():
-            respostas_cat = [respostas_numericas[i] for i in indices]
-            media = sum(respostas_cat) / len(respostas_cat)
-            st.markdown(f"### 🔸 {categoria}")
-            st.markdown(f"**Sua pontuação média:** `{media:.1f}`")
-            st.markdown(explicacoes[categoria])
-            st.markdown("---")
+    for categoria, indices in categorias.items():
+        respostas_cat = [respostas_numericas[i] for i in indices]
+        media = sum(respostas_cat) / len(respostas_cat)
+        st.markdown(f"### 🔸 {categoria}")
+        st.markdown(f"**Sua pontuação média:** `{media:.1f}`")
+        st.markdown(explicacoes[categoria])
+        st.markdown("---")
 
-        st.info("🔍 Este questionário ainda não foi validado cientificamente em estudos publicados, mas foi baseado em instrumentos previamente validados na literatura. Os resultados não têm valor diagnóstico, mas funcionam como um guia valioso para reflexões e acompanhamento nutricional")
-            except Exception as e:
-                st.error(f"Erro ao salvar na planilha: {e}")
-        else:
-            st.warning("Por favor, preencha todos os campos antes de enviar.")
-
-   
-
-# Aplicar a navegação no final
-if st.session_state.navegar_para:
-    st.session_state.pagina = st.session_state.navegar_para
-    st.session_state.navegar_para = None
-    st.rerun()
+    st.info("🔍 Este questionário ainda não foi validado cientificamente em estudos publicados, mas foi baseado em instrumentos previamente validados na literatura. Os resultados não têm valor diagnóstico, mas funcionam como um guia valioso para reflexões e acompanhamento nutricional.")
