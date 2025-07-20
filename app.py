@@ -13,14 +13,14 @@ aplicar_estilo()
 st.markdown(
     """
     <div style="text-align: center;">
-        <img src="https://i.imgur.com/5cG9pWs.png" width="150" style="margin-bottom: 20px;" />
-        <h1 style="color: #5e412f;">📋 Raio-X Comportamental</h1>
+        <h1 style="color: #5e412f;">🧠 Raio-X Comportamental</h1>
+        st.markdown("##### Por *Nutricionista Giulia Mano* — CRN 12345")
         <p style="font-size: 1.1rem; max-width: 700px; margin: 0 auto;">
-            Olá! Eu sou a <strong>nutricionista Giulia Mano</strong>. Este questionário foi desenvolvido para ajudar você a entender melhor seus padrões alimentares e pensamentos que podem estar interferindo nos seus resultados.
+            Olá! Prazer, meu nome é <strong>Giulia. </strong>. Este questionário foi desenvolvido para ajudar você a entender melhor seus padrões alimentares e pensamentos que podem estar interferindo nos seus resultados.
         </p>
         <p style="font-size: 1rem; color: #6a5d4d;">
-            <strong>Importante:</strong> todas as respostas são confidenciais e utilizadas apenas para acompanhamento nutricional.<br>
-            Caso alguma frase não represente exatamente o que você pensa, selecione a que <strong>mais se aproxima</strong>.
+            <strong>Importante:</strong> Não existe resposta certa ou errada.  O mais importante é você se reconhecer com sinceridade.<br>
+            Caso alguma frase não represente exatamente o que você pensa, mas se aproxima, selecione a que <strong>mesmo assim </strong>.
         </p>
         <p style="margin-top: 1rem;">
             📲 Instagram: <a href="https://instagram.com/nutrigiuliamano" target="_blank">@nutrigiuliamano</a><br>
@@ -40,19 +40,19 @@ st.markdown("---")
 
 # Perguntas principais
 perguntas_comportamento = [
-    "Estar com alguém que está comendo me dá frequentemente vontade de comer também.",
-    "Quando me sinto tenso(a) ou estressado(a), frequentemente sinto que preciso comer.",
-    "Entre as refeições principais, eu frequentemente belisco pedaços de alimentos. Ex: abro a geladeira, pego umas uvas e como andando.",
-    "Eu conscientemente me controlo nas refeições para evitar ganhar peso.",
-    "Se a comida me parece apetitosa, como mais do que o habitual.",
-    "Se meu peso aumenta, como menos do que o habitual.",
-    "Se vejo ou sinto o aroma de algo muito gostoso, sinto um desejo muito forte de comer.",
-    "Se tenho alguma coisa muito saborosa para comer, como-a de imediato.",
+    "Estar com alguém que está comendo me dá vontade de comer também.",
+    "Quando me sinto tenso(a) ou estressado(a), frequentemente sinto necessidade de comer.",
+    "Belisco entre as refeições. Ex: pego umas uvas na geladeira enquanto caminho.",
+    "Eu conscientemente me controlo durante as refeições para evitar ganhar peso.",
+    "Quando a comida me parece muito apetitosa, como mais do que o habitual.",
+    "Quando meu peso aumenta, reduzo a quantidade do que como.",
+    "Quando vejo ou sinto o aroma de algo muito gostoso, sinto um desejo forte de comer.",
+    "Quando tenho algo muito saborosa para comer, como imediatamente.",
     "Durante as refeições, controlo a quantidade do que como.",
-    "Tenho desejo de comer quando estou procrastinando algo.",
-    "Consigo deixar de comer alimentos muito apetitosos.",
-    "Levo em consideração meus objetivos e valores quando escolho o que vou comer.",
-    "Quando preparo uma refeição, costumo petiscar alguma coisa.",
+    Tenho vontade de comer quando estou adiando alguma tarefa.",
+    "Consigo resistir a alimentos muito apetitosos.",
+    "Levo em consideração meus objetivos e valores na hora de escolher o que comer.",
+    "Enquanto preparo a comida, costumo petiscar alguma coisa.",
     "Eu deliberadamente consumo pequenas porções para controlar meu peso.",
     "Comi mesmo sem estar com fome porque estava entediado(a).",
     "Comi mesmo sem estar com fome porque estava me sentindo ansioso(a), triste ou estressado(a).",
@@ -161,22 +161,22 @@ elif st.session_state.pagina == total_paginas + 1:
 **Fome Emocional** refere-se ao impulso de comer em resposta a emoções — como estresse, tristeza, ansiedade ou tédio — e não à fome física.
 
 - **Pontuação baixa (0–1):** você demonstra equilíbrio ao lidar com emoções sem recorrer à comida.
-- **Pontuação média (1.1–2):** indica que, às vezes, a comida é usada como válvula de escape.
-- **Pontuação alta (2.1–3):** a alimentação pode estar sendo usada com frequência para regular emoções.
+- **Pontuação média (1.1–2):** indica que, às vezes, a comida é usada como válvula de escape. Isso é comum e pode ser trabalhado!
+- **Pontuação alta (2.1–3):** a alimentação pode estar sendo usada com frequência para regular emoções. Isso merece atenção, mas é totalmente possível de ser transformado com dedicação e as estratégias certas.
 """,
             "Comer por Influência Externa": """
 **Comer por Influência Externa** acontece quando comemos mais por estímulos do ambiente do que por necessidade física — como cheiro, visão de comida, pressão social ou hábitos automáticos.
 
-- **Pontuação baixa (0–1):** você tende a se guiar bem pelos seus sinais internos.
+- **Pontuação baixa (0–1):** você tende a se guiar bem pelos seus sinais internos. de fome e saciedade.
 - **Pontuação média (1.1–2):** mostra que alguns estímulos externos influenciam sua alimentação.
-- **Pontuação alta (2.1–3):** o ambiente pode estar determinando grande parte do seu comportamento alimentar.
+- **Pontuação alta (2.1–3):** o ambiente pode estar determinando grande parte do seu comportamento alimentar. Pequenas mudanças bem direcionadas podem ter grande impacto.
 """,
             "Autocontrole e Valores": """
 **Autocontrole e Valores** refletem o quanto suas escolhas alimentares estão alinhadas aos seus objetivos e autorregulação.
 
 - **Pontuação baixa (0–1):** pode haver dificuldade em aplicar escolhas conscientes.
-- **Pontuação média (1.1–2):** você está no caminho, com espaço para fortalecimento.
-- **Pontuação alta (2.1–3):** você demonstra alinhamento entre seus valores e comportamento alimentar.
+- **Pontuação média (1.1–2):** você está no caminho, com espaço para fortalecimento do autocontrole.
+- **Pontuação alta (2.1–3):** você demonstra alinhamento entre seus valores e comportamento. Muito positivo!
 """
         }
 
