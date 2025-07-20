@@ -97,6 +97,7 @@ inicio = (st.session_state.pagina - 1) * por_pagina
 fim = min(inicio + por_pagina, len(perguntas_comportamento))
 
 # Página de perguntas principais
+
 if st.session_state.pagina <= total_paginas:
     st.subheader(f"🍽️ Comportamentos Alimentares (Página {st.session_state.pagina} de {total_paginas})")
     for i in range(inicio, fim):
