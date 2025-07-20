@@ -1,39 +1,59 @@
+# Novo estilo.py
 import streamlit as st
 
 def aplicar_estilo():
-    st.markdown("""
+    st.markdown(
+        """
         <style>
-            /* Fundo geral da aplicação */
-            .stApp {
-                background-color: #f9f3e8;
+            @import url('https://fonts.googleapis.com/css2?family=Georgia&display=swap');
+
+            html, body, [class*="css"] {
+                font-family: 'Georgia', serif;
+                background-color: #f7f0e8;
+                color: #333333;
             }
-            /* Container principal */
-            section[data-testid="stAppViewContainer"] > div {
+
+            .main {
                 background-color: #ffffff;
-                border-radius: 12px;
                 padding: 2rem;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                border-radius: 10px;
             }
-            /* Cabeçalhos */
+
             h1, h2, h3 {
-                color: #5e412f !important;
-                font-family: 'Segoe UI', sans-serif;
+                color: #5e412f;
             }
-            /* Botões */
-            .stButton > button {
-                background-color: #c7a17a;
-                color: #ffffff;
-                border-radius: 6px;
+
+            .stButton>button {
+                background-color: #bfa17b;
+                color: white;
+                font-weight: bold;
+                border-radius: 8px;
+                border: none;
                 padding: 0.6rem 1.2rem;
                 font-size: 1rem;
-                font-weight: bold;
             }
-            .stButton > button:hover {
-                background-color: #a67c52;
+
+            .stButton>button:hover {
+                background-color: #a88966;
+                color: #fff;
             }
-            /* Inputs e radio */
-            input, textarea, .stRadio > div {
-                background-color: #fffaf2 !important;
+
+            .stRadio>div>label {
+                background-color: #fffaf3;
+                padding: 0.5rem 1rem;
+                border-radius: 6px;
+                border: 1px solid #e6d8c3;
+                margin-bottom: 0.3rem;
+                cursor: pointer;
+            }
+
+            .stTextInput>div>div>input {
+                background-color: #fff;
+                border: 1px solid #d6c9b5;
+                padding: 0.5rem;
+                border-radius: 6px;
             }
         </style>
-        """, unsafe_allow_html=True)
+        """,
+        unsafe_allow_html=True
+    )
