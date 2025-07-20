@@ -80,7 +80,7 @@ pensamentos_sabotadores = [
 opcoes_freq = ["Nunca", "Às vezes", "Frequentemente", "Quase sempre"]
 opcoes_sabotagem = ["Não me identifico", "Me identifico um pouco", "Me identifico muito"]
 
-# Estados iniciais
+# Estados de sessão
 por_pagina = 6
 total_paginas = (len(perguntas_comportamento) + por_pagina - 1) // por_pagina
 
@@ -92,68 +92,76 @@ if "respostas_pensamentos" not in st.session_state:
     st.session_state.respostas_pensamentos = [""] * len(pensamentos_sabotadores)
 if "respostas_enviadas" not in st.session_state:
     st.session_state.respostas_enviadas = False
+# Exibe perguntas de acordo com a página atual
+indice_inicial = (st.session_state.pagina - 1) * por_pagina
+indice_final = indice_inicial + por_pagina
 
-# Página de perguntas principais
-if st.session_state.pagina <= total_paginas:
-    st.subheader(f"🍽️ Comportamentos Alimentares (Página {st.session_state.pagina} de {total_paginas})")
-
-    inicio = (st.session_state.pagina - 1) * por_pagina
-    fim = min(inicio + por_pagina, len(perguntas_comportamento))
-
-    for i in range(inicio, fim):
-        resposta = st.radio(perguntas_comportamento[i], opcoes_freq, key=f"comp_{i}")
+with st.form(key=f"pagina_{st.session_state.pagina}"):
+    st.subheader(f"Bloco {st.session_state.pagina}")
+    for i in range(indice_inicial, min(indice_final, len(perguntas_comportamento))):
+        resposta = st.radio(
+            f"{i + 1}. {perguntas_comportamento[i]}",
+            opcoes_freq,
+            index=opcoes_freq.index(st.session_state.respostas_comportamento[i]) if st.session_state.respostas_comportamento[i] else 0,
+            key=f"comportamento_{i}"
+        )
         st.session_state.respostas_comportamento[i] = resposta
 
-    col1, col2, col3 = st.columns([1, 1, 2])
-    with col1:
-        if st.session_state.pagina > 1:
-            if st.button("⬅️ Voltar"):
-                st.session_state.pagina -= 1
-    with col2:
-        if st.session_state.pagina < total_paginas:
-            if st.button("➡️ Próximo"):
-                st.session_state.pagina += 1
-    with col3:
-        if st.session_state.pagina == total_paginas:
-            if st.button("🧠 Avançar para Pensamentos Sabotadores"):
-                st.session_state.pagina += 1
+    col1, col2 = st.columns([1, 1])
+    if st.session_state.pagina > 1:
+        voltar = col1.form_submit_button("Voltar")
+    else:
+        voltar = False
+    if st.session_state.pagina < total_paginas:
+        avancar = col2.form_submit_button("Próximo")
+    else:
+        avancar = col2.form_submit_button("Ir para Pensamentos Sabotadores")
 
-# Página de pensamentos sabotadores
-elif st.session_state.pagina == total_paginas + 1:
+    if voltar:
+        st.session_state.pagina -= 1
+    elif avancar:
+        st.session_state.pagina += 1
+# Página dos Pensamentos Sabotadores
+if st.session_state.pagina == total_paginas + 1:
     st.subheader("🧠 Pensamentos Sabotadores")
     st.markdown("Esses são **pensamentos comuns que podem atrapalhar** seus resultados. Se identificar com algum deles já é um grande passo.")
 
-    for i, pensamento in enumerate(pensamentos_sabotadores):
-        resposta = st.radio(pensamento, opcoes_sabotagem, key=f"pens_{i}")
-        st.session_state.respostas_pensamentos[i] = resposta
+    with st.form(key="pensamentos_form"):
+        for i, pensamento in enumerate(pensamentos_sabotadores):
+            resposta = st.radio(
+                f"{i + 1}. {pensamento}",
+                opcoes_sabotagem,
+                index=opcoes_sabotagem.index(st.session_state.respostas_pensamentos[i]) if st.session_state.respostas_pensamentos[i] else 0,
+                key=f"pensamento_{i}"
+            )
+            st.session_state.respostas_pensamentos[i] = resposta
 
-    st.markdown("---")
+        enviado = st.form_submit_button("📨 Enviar respostas")
 
-    if st.button("📨 Enviar respostas"):
-        if nome and email and celular:
-            try:
-                scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-                secret_dict = st.secrets["gcp_service_account"]
-                creds = ServiceAccountCredentials.from_json_keyfile_dict(secret_dict, scope)
-                client = gspread.authorize(creds)
+        if enviado:
+            if nome and email and celular:
+                try:
+                    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+                    secret_dict = st.secrets["gcp_service_account"]
+                    creds = ServiceAccountCredentials.from_json_keyfile_dict(secret_dict, scope)
+                    client = gspread.authorize(creds)
 
-                sheet = client.open("Raio-X Comportamental - Respostas").sheet1
-                data = [datetime.now().strftime("%d/%m/%Y %H:%M:%S"), nome, email, celular] + st.session_state.respostas_comportamento + st.session_state.respostas_pensamentos
-                sheet.append_row(data)
+                    sheet = client.open("Raio-X Comportamental - Respostas").sheet1
+                    data = [datetime.now().strftime("%d/%m/%Y %H:%M:%S"), nome, email, celular] + st.session_state.respostas_comportamento + st.session_state.respostas_pensamentos
+                    sheet.append_row(data)
 
-                st.session_state.respostas_enviadas = True
-                st.success("Respostas enviadas com sucesso! Obrigada por participar 💛")
-            except Exception as e:
-                st.error(f"Erro ao salvar na planilha: {e}")
-        else:
-            st.warning("Por favor, preencha todos os campos antes de enviar.")
-
+                    st.session_state.respostas_enviadas = True
+                    st.success("Respostas enviadas com sucesso! Obrigada por participar 💛")
+                except Exception as e:
+                    st.error(f"Erro ao salvar na planilha: {e}")
+            else:
+                st.warning("Por favor, preencha todos os campos antes de enviar.")
 # Análise (somente após envio)
 if st.session_state.respostas_enviadas:
     st.subheader("🔍 Sua Análise Comportamental")
 
     valores = {"Nunca": 0, "Às vezes": 1, "Frequentemente": 2, "Quase sempre": 3}
-    respostas_numericas = [valores[r] for r in st.session_state.respostas_comportamento]
+    respostas_numericas = [valores.get(r, 0) for r in st.session_state.respostas_comportamento]
 
     categorias = {
         "Fome Emocional": [1, 9, 14, 15, 16, 17],
