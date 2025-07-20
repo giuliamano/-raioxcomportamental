@@ -139,7 +139,7 @@ elif st.session_state.pagina == total_paginas + 1:
                 sheet.append_row(data)
 
                 st.success("Respostas enviadas com sucesso! Obrigada por participar 💛")
-                 # Análise
+                # Análise
     if nome and email and celular and all(r in opcoes_freq for r in st.session_state.respostas_comportamento):
         st.subheader("🔍 Sua Análise Comportamental")
 
