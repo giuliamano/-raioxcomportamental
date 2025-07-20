@@ -49,7 +49,7 @@ perguntas_comportamento = [
     "Quando vejo ou sinto o aroma de algo muito gostoso, sinto um desejo forte de comer.",
     "Quando tenho algo muito saborosa para comer, como imediatamente.",
     "Durante as refeições, controlo a quantidade do que como.",
-    Tenho vontade de comer quando estou adiando alguma tarefa.",
+    "Tenho vontade de comer quando estou adiando alguma tarefa.",
     "Consigo resistir a alimentos muito apetitosos.",
     "Levo em consideração meus objetivos e valores na hora de escolher o que comer.",
     "Enquanto preparo a comida, costumo petiscar alguma coisa.",
