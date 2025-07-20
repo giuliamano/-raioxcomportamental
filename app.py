@@ -14,7 +14,7 @@ st.markdown(
     """
     <div style="text-align: center;">
         <h1 style="color: #5e412f;">🧠 Raio-X Comportamental</h1>
-        st.markdown("##### Por *Nutricionista Giulia Mano* — CRN 12345")
+        st.subheader("Por Giulia Mano • Nutricionista • CRN 12345")
         <p style="font-size: 1.1rem; max-width: 700px; margin: 0 auto;">
             Olá! Prazer, meu nome é <strong>Giulia. </strong>. Este questionário foi desenvolvido para ajudar você a entender melhor seus padrões alimentares e pensamentos que podem estar interferindo nos seus resultados.
         </p>
