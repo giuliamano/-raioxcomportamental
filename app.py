@@ -7,11 +7,9 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 
 st.set_page_config(page_title="Raio-X Comportamental", layout="centered")
-
 aplicar_estilo()
 
-# Título e introdução
-# Novo cabeçalho com imagem
+# Cabeçalho com imagem e introdução
 st.markdown(
     """
     <div style="text-align: center;">
@@ -33,7 +31,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
 # Dados pessoais
 st.header("Seus dados")
 nome = st.text_input("Nome completo")
@@ -41,12 +38,7 @@ email = st.text_input("E-mail")
 celular = st.text_input("Celular (WhatsApp)")
 st.markdown("---")
 
-# Perguntas principais
-# Etapa 4 - Perguntas com visual melhorado e páginas separadas
-
-import streamlit as st
-
-# Organizar as perguntas principais em blocos
+# Perguntas e pensamentos
 perguntas_comportamento = [
     "Estar com alguém que está comendo me dá frequentemente vontade de comer também.",
     "Quando me sinto tenso(a) ou estressado(a), frequentemente sinto que preciso comer.",
@@ -89,28 +81,32 @@ pensamentos_sabotadores = [
 opcoes_freq = ["Nunca", "Às vezes", "Frequentemente", "Quase sempre"]
 opcoes_sabotagem = ["Não me identifico", "Me identifico um pouco", "Me identifico muito"]
 
-# Criar páginas
-total_perguntas = len(perguntas_comportamento)
-por_pagina = 6
-total_paginas = (total_perguntas + por_pagina - 1) // por_pagina
-
-# Guardar respostas no session_state
+# Paginação com session_state
 if "pagina" not in st.session_state:
     st.session_state.pagina = 1
 if "respostas_comportamento" not in st.session_state:
-    st.session_state.respostas_comportamento = [""] * total_perguntas
+    st.session_state.respostas_comportamento = [""] * len(perguntas_comportamento)
 if "respostas_pensamentos" not in st.session_state:
     st.session_state.respostas_pensamentos = [""] * len(pensamentos_sabotadores)
 
-# Mostrar perguntas por página
+por_pagina = 6
+total_paginas = (len(perguntas_comportamento) + por_pagina - 1) // por_pagina
+
+# Exibir perguntas por página
 inicio = (st.session_state.pagina - 1) * por_pagina
-fim = min(inicio + por_pagina, total_perguntas)
+fim = min(inicio + por_pagina, len(perguntas_comportamento))
 
-st.subheader(f"🍽️ Comportamentos Alimentares (Página {st.session_state.pagina} de {total_paginas})")
-
-for i in range(inicio, fim):
-    resposta = st.radio(perguntas_comportamento[i], opcoes_freq, key=f"comp_{i}")
-    st.session_state.respostas_comportamento[i] = resposta
+if st.session_state.pagina <= total_paginas:
+    st.subheader(f"🍽️ Comportamentos Alimentares (Página {st.session_state.pagina} de {total_paginas})")
+    for i in range(inicio, fim):
+        resposta = st.radio(perguntas_comportamento[i], opcoes_freq, key=f"comp_{i}")
+        st.session_state.respostas_comportamento[i] = resposta
+else:
+    st.subheader("🧠 Pensamentos Sabotadores")
+    st.markdown("Esses são **pensamentos comuns que podem atrapalhar** seus resultados. Se identificar com algum deles já é um grande passo.")
+    for i, pensamento in enumerate(pensamentos_sabotadores):
+        resposta = st.radio(pensamento, opcoes_sabotagem, key=f"pens_{i}")
+        st.session_state.respostas_pensamentos[i] = resposta
 
 # Botões de navegação
 col1, col2, col3 = st.columns([1, 1, 2])
@@ -127,17 +123,6 @@ with col3:
         if st.button("🧠 Avançar para Pensamentos Sabotadores"):
             st.session_state.pagina += 1
 
-# Pensamentos Sabotadores (última "página")
-if st.session_state.pagina == total_paginas + 1:
-    st.subheader("🧠 Pensamentos Sabotadores")
-    st.markdown("Esses são **pensamentos comuns que podem atrapalhar** seus resultados. Se identificar com algum deles já é um grande passo.")
-
-    for i, pensamento in enumerate(pensamentos_sabotadores):
-        resposta = st.radio(pensamento, opcoes_sabotagem, key=f"pens_{i}")
-        st.session_state.respostas_pensamentos[i] = resposta
-
-
-
 st.markdown("---")
 
 # Botão de envio
@@ -150,8 +135,8 @@ if st.button("📨 Enviar respostas"):
             client = gspread.authorize(creds)
 
             sheet = client.open("Raio-X Comportamental - Respostas").sheet1
-            data = [datetime.now().strftime("%d/%m/%Y %H:%M:%S"), nome, email, celular] + respostas_comportamento_final + respostas_pensamentos
-
+            data = [datetime.now().strftime("%d/%m/%Y %H:%M:%S"), nome, email, celular] + st.session_state.respostas_comportamento + st.session_state.respostas_pensamentos
+            sheet.append_row(data)
 
             st.success("Respostas enviadas com sucesso! Obrigada por participar 💛")
         except Exception as e:
@@ -159,13 +144,12 @@ if st.button("📨 Enviar respostas"):
     else:
         st.warning("Por favor, preencha todos os campos antes de enviar.")
 
-# Análise individual
-if nome and email and celular and len(respostas_comportamento) == 23:
+# Análise
+if nome and email and celular and all(r in opcoes_freq for r in st.session_state.respostas_comportamento):
     st.subheader("🔍 Sua Análise Comportamental")
 
     valores = {"Nunca": 0, "Às vezes": 1, "Frequentemente": 2, "Quase sempre": 3}
-
-    respostas_numericas = [valores.get(r, 0) for r in respostas_comportamento]
+    respostas_numericas = [valores.get(r, 0) for r in st.session_state.respostas_comportamento]
 
     categorias = {
         "Fome Emocional": [1, 9, 14, 15, 16, 17],
