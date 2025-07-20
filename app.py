@@ -195,4 +195,4 @@ elif st.session_state.pagina == total_paginas + 1:
 if st.session_state.navegar_para:
     st.session_state.pagina = st.session_state.navegar_para
     st.session_state.navegar_para = None
-    st.experimental_rerun()
+    st.rerun()
