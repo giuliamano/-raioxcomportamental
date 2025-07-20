@@ -120,7 +120,7 @@ if st.session_state.pagina <= total_paginas:
 
 elif st.session_state.pagina == total_paginas + 1:
     st.subheader("🧠 Pensamentos Sabotadores")
-    st.markdown("Esses são **pensamentos automáticos comuns que podem sequenciar comportamentos contrários aos seus objetivos**. Identificá-los é o primeiro passo")
+    st.markdown("Esses são **pensamentos automáticos comuns que podem sequenciar comportamentos contrários aos seus objetivos de longo prazo**. Identificá-los é o primeiro passo!")
 
     for i, pensamento in enumerate(pensamentos_sabotadores):
         resposta = st.radio(pensamento, opcoes_sabotagem, key=f"pens_{i}")
