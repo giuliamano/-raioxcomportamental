@@ -150,8 +150,8 @@ if st.button("📨 Enviar respostas"):
             client = gspread.authorize(creds)
 
             sheet = client.open("Raio-X Comportamental - Respostas").sheet1
-            data = [datetime.now().strftime("%d/%m/%Y %H:%M:%S"), nome, email, celular] + respostas_comportamento + respostas_pensamentos
-            sheet.append_row(data)
+            data = [datetime.now().strftime("%d/%m/%Y %H:%M:%S"), nome, email, celular] + respostas_comportamento_final + respostas_pensamentos
+
 
             st.success("Respostas enviadas com sucesso! Obrigada por participar 💛")
         except Exception as e:
