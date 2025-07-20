@@ -13,7 +13,6 @@ aplicar_estilo()
 st.markdown(
     """
     <div style="text-align: center;">
-        <img src="https://i.imgur.com/5cG9pWs.png" width="150" style="margin-bottom: 20px;" />
         <h1 style="color: #5e412f;">📋 Raio-X Comportamental</h1>
         <p style="font-size: 1.1rem; max-width: 700px; margin: 0 auto;">
             Olá! Eu sou a <strong>nutricionista Giulia Mano</strong>. Este questionário foi desenvolvido para ajudar você a entender melhor seus padrões alimentares e pensamentos que podem estar interferindo nos seus resultados.
