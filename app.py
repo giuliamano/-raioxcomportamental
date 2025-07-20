@@ -7,25 +7,25 @@ def aplicar_estilo():
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap');
 
         html, body, [class*="css"] {
-            font-family: 'Inter', sans-serif;
-            background-color: #f9f5f0;
-            color: #3e3e3e;
+            font-family: 'Inter', sans-serif !important;
+            background-color: #f9f5f0 !important;
+            color: #3e3e3e !important;
         }
 
         h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-            color: #4b3621;
+            font-family: 'Playfair Display', serif !important;
+            color: #4b3621 !important;
         }
 
         /* Botões */
         .stButton > button {
             background-color: #d9c4aa !important;
             color: #3e3e3e !important;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            border: none;
-            border-radius: 8px;
-            padding: 0.6rem 1.2rem;
+            font-family: 'Inter', sans-serif !important;
+            font-size: 1rem !important;
+            border: none !important;
+            border-radius: 8px !important;
+            padding: 0.6rem 1.2rem !important;
             transition: background-color 0.3s ease;
         }
 
@@ -34,12 +34,12 @@ def aplicar_estilo():
             color: #000000 !important;
         }
 
-        /* Estilo das perguntas (st.radio) */
+        /* Estilo dos blocos de radio */
         .stRadio > div {
-            background-color: #f2ebe3;
-            padding: 0.8rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
+            background-color: #f2ebe3 !important;
+            padding: 0.8rem !important;
+            border-radius: 10px !important;
+            margin-bottom: 1rem !important;
         }
 
         .stRadio label {
@@ -48,7 +48,7 @@ def aplicar_estilo():
             color: #3e3e3e !important;
         }
 
-        /* Remove imagem ou cor do cabeçalho padrão do Streamlit */
+        /* Remove imagem ou cor do cabeçalho */
         [data-testid="stHeader"] {
             background-color: transparent !important;
             background-image: none !important;
