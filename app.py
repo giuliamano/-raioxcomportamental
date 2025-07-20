@@ -139,12 +139,7 @@ elif st.session_state.pagina == total_paginas + 1:
                 sheet.append_row(data)
 
                 st.success("Respostas enviadas com sucesso! Obrigada por participar 💛")
-            except Exception as e:
-                st.error(f"Erro ao salvar na planilha: {e}")
-        else:
-            st.warning("Por favor, preencha todos os campos antes de enviar.")
-
-    # Análise
+                 # Análise
     if nome and email and celular and all(r in opcoes_freq for r in st.session_state.respostas_comportamento):
         st.subheader("🔍 Sua Análise Comportamental")
 
@@ -190,6 +185,12 @@ elif st.session_state.pagina == total_paginas + 1:
             st.markdown("---")
 
         st.info("🔍 Este questionário ainda não foi validado cientificamente em estudos publicados, mas foi baseado em instrumentos previamente validados na literatura. Os resultados não têm valor diagnóstico, mas funcionam como um guia valioso para reflexões e acompanhamento nutricional")
+            except Exception as e:
+                st.error(f"Erro ao salvar na planilha: {e}")
+        else:
+            st.warning("Por favor, preencha todos os campos antes de enviar.")
+
+   
 
 # Aplicar a navegação no final
 if st.session_state.navegar_para:
