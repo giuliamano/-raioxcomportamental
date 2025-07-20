@@ -11,18 +11,28 @@ st.set_page_config(page_title="Raio-X Comportamental", layout="centered")
 aplicar_estilo()
 
 # Título e introdução
-st.title("📋 Raio-X Comportamental")
-st.markdown("""
-Olá! Eu sou a **nutricionista Giulia Mano**. Este questionário foi desenvolvido para ajudar você a entender melhor seus padrões alimentares e pensamentos que podem estar interferindo nos seus resultados.
+# Novo cabeçalho com imagem
+st.markdown(
+    """
+    <div style="text-align: center;">
+        <img src="https://i.imgur.com/5cG9pWs.png" width="150" style="margin-bottom: 20px;" />
+        <h1 style="color: #5e412f;">📋 Raio-X Comportamental</h1>
+        <p style="font-size: 1.1rem; max-width: 700px; margin: 0 auto;">
+            Olá! Eu sou a <strong>nutricionista Giulia Mano</strong>. Este questionário foi desenvolvido para ajudar você a entender melhor seus padrões alimentares e pensamentos que podem estar interferindo nos seus resultados.
+        </p>
+        <p style="font-size: 1rem; color: #6a5d4d;">
+            <strong>Importante:</strong> todas as respostas são confidenciais e utilizadas apenas para acompanhamento nutricional.<br>
+            Caso alguma frase não represente exatamente o que você pensa, selecione a que <strong>mais se aproxima</strong>.
+        </p>
+        <p style="margin-top: 1rem;">
+            📲 Instagram: <a href="https://instagram.com/nutrigiuliamano" target="_blank">@nutrigiuliamano</a><br>
+            📞 WhatsApp: (11) 97592-5467
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
-**Importante:** todas as respostas são confidenciais e utilizadas apenas para acompanhamento nutricional.
-
-Caso alguma frase não represente exatamente o que você pensa, selecione a que **mais se aproxima**.
-
-📲 Instagram: [@nutrigiuliamano](https://instagram.com/nutrigiuliamano)  
-📞 WhatsApp: (11) 97592-5467
-""")
-st.markdown("---")
 
 # Dados pessoais
 st.header("Seus dados")
