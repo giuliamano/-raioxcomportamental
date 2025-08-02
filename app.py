@@ -129,7 +129,7 @@ elif st.session_state.pagina == total_paginas + 1:
     st.markdown("---")
 
     if st.button("📨 Enviar respostas"):
-    if nome and email and celular:
+        if nome and email and celular:
         try:
             scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
             secret_dict = st.secrets["gcp_service_account"]
