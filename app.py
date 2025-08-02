@@ -128,7 +128,7 @@ elif st.session_state.pagina == total_paginas + 1:
 
     st.markdown("---")
 
-    if st.button("📨 Enviar respostas"):
+        if st.button("📨 Enviar respostas"):
         if nome and email and celular:
             try:
                 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
@@ -137,7 +137,32 @@ elif st.session_state.pagina == total_paginas + 1:
                 client = gspread.authorize(creds)
 
                 sheet = client.open("Raio-X Comportamental - Respostas").sheet1
-                data = [datetime.now().strftime("%d/%m/%Y %H:%M:%S"), nome, email, celular] + st.session_state.respostas_comportamento + st.session_state.respostas_pensamentos
+
+                # Calcular as pontuações
+                valores = {"Nunca": 0, "Às vezes": 1, "Frequentemente": 2, "Quase sempre": 3}
+                respostas_numericas = [valores[r] for r in st.session_state.respostas_comportamento]
+
+                categorias = {
+                    "Fome Emocional": [1, 9, 14, 15, 16, 17],
+                    "Comer por Influência Externa": [0, 2, 4, 6, 7, 12, 20, 22],
+                    "Autocontrole e Valores": [3, 5, 8, 10, 11, 13]
+                }
+
+                medias = {}
+                for categoria, indices in categorias.items():
+                    respostas_cat = [respostas_numericas[i] for i in indices]
+                    media = sum(respostas_cat) / len(respostas_cat)
+                    medias[categoria] = round(media, 1)
+
+                data = [
+                    datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+                    nome, email, celular
+                ] + st.session_state.respostas_comportamento + st.session_state.respostas_pensamentos + [
+                    medias["Fome Emocional"],
+                    medias["Comer por Influência Externa"],
+                    medias["Autocontrole e Valores"]
+                ]
+
                 sheet.append_row(data)
 
                 st.session_state.respostas_enviadas = True
@@ -146,6 +171,7 @@ elif st.session_state.pagina == total_paginas + 1:
                 st.error(f"Erro ao salvar na planilha: {e}")
         else:
             st.warning("Por favor, preencha todos os campos antes de enviar.")
+
 
     # Análise (após envio)
     if st.session_state.respostas_enviadas:
