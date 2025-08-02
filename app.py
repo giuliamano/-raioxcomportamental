@@ -128,7 +128,7 @@ elif st.session_state.pagina == total_paginas + 1:
 
     st.markdown("---")
 
-        if st.button("📨 Enviar respostas"):
+    if st.button("📨 Enviar respostas"):
             nome = st.session_state.get("nome", "")
             email = st.session_state.get("email", "")
             celular = st.session_state.get("celular", "")
