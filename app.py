@@ -128,11 +128,11 @@ elif st.session_state.pagina == total_paginas + 1:
 
     st.markdown("---")
 
-    if st.button("📨 Enviar respostas"):
-            nome = st.session_state.get("nome", "")
-            email = st.session_state.get("email", "")
-            celular = st.session_state.get("celular", "")
-            if nome and email and celular and all(r in opcoes_freq for r in st.session_state.respostas_comportamento):
+   if st.button("📨 Enviar respostas"):
+        nome = st.session_state.get("nome", "")
+        email = st.session_state.get("email", "")
+        celular = st.session_state.get("celular", "")
+        if nome and email and celular and all(r in opcoes_freq for r in st.session_state.respostas_comportamento):
             try:
                 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
                 secret_dict = st.secrets["gcp_service_account"]
