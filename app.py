@@ -128,49 +128,54 @@ elif st.session_state.pagina == total_paginas + 1:
 
     st.markdown("---")
 
-       if st.button("📨 Enviar respostas"):
-        nome = st.session_state.get("nome", "")
-        email = st.session_state.get("email", "")
-        celular = st.session_state.get("celular", "")
-        if nome and email and celular and all(r in opcoes_freq for r in st.session_state.respostas_comportamento):
-            try:
-                scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-                secret_dict = st.secrets["gcp_service_account"]
-                creds = ServiceAccountCredentials.from_json_keyfile_dict(secret_dict, scope)
-                client = gspread.authorize(creds)
-                sheet = client.open("Raio-X Comportamental - Respostas").sheet1
+    if st.button("📨 Enviar respostas"):
+    if nome and email and celular:
+        try:
+            scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+            secret_dict = st.secrets["gcp_service_account"]
+            creds = ServiceAccountCredentials.from_json_keyfile_dict(secret_dict, scope)
+            client = gspread.authorize(creds)
 
-                valores = {"Nunca": 0, "Às vezes": 1, "Frequentemente": 2, "Quase sempre": 3}
-                respostas_numericas = [valores[r] for r in st.session_state.respostas_comportamento]
+            sheet = client.open("Raio-X Comportamental - Respostas").sheet1
 
-                categorias = {
-                    "Fome Emocional": [1, 9, 14, 15, 16, 17],
-                    "Comer por Influência Externa": [0, 2, 4, 6, 7, 12, 20, 22],
-                    "Autocontrole e Valores": [3, 5, 8, 10, 11, 13]
-                }
+            # Verificar e escrever cabeçalho, se ainda não existir
+            if sheet.row_count == 0 or sheet.cell(1, 1).value == '':
+                header = ["Data e Hora", "Nome", "Email", "Celular"]
+                header += [f"Pergunta {i+1}" for i in range(len(perguntas_comportamento))]
+                header += [f"Pensamento {i+1}" for i in range(len(pensamentos_sabotadores))]
+                header += ["Fome Emocional", "Comer por Influência Externa", "Autocontrole e Valores"]
+                sheet.insert_row(header, 1)
 
-                medias = {}
-                for categoria, indices in categorias.items():
-                    respostas_cat = [respostas_numericas[i] for i in indices]
-                    media = sum(respostas_cat) / len(respostas_cat)
-                    medias[categoria] = round(media, 1)
+            # Calcular médias por categoria
+            valores = {"Nunca": 0, "Às vezes": 1, "Frequentemente": 2, "Quase sempre": 3}
+            respostas_numericas = [valores[r] for r in st.session_state.respostas_comportamento]
+            categorias = {
+                "Fome Emocional": [1, 9, 14, 15, 16, 17],
+                "Comer por Influência Externa": [0, 2, 4, 6, 7, 12, 20, 22],
+                "Autocontrole e Valores": [3, 5, 8, 10, 11, 13]
+            }
+            medias = [
+                round(sum([respostas_numericas[i] for i in indices]) / len(indices), 1)
+                for indices in categorias.values()
+            ]
 
-                data = [
-                    datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-                    nome, email, celular
-                ] + st.session_state.respostas_comportamento + st.session_state.respostas_pensamentos + [
-                    medias["Fome Emocional"],
-                    medias["Comer por Influência Externa"],
-                    medias["Autocontrole e Valores"]
-                ]
+            # Montar linha de dados
+            data = [datetime.now().strftime("%d/%m/%Y %H:%M:%S"), nome, email, celular]
+            data += st.session_state.respostas_comportamento
+            data += st.session_state.respostas_pensamentos
+            data += medias
 
-                sheet.append_row(data)
-                st.session_state.respostas_enviadas = True
-                st.success("Respostas enviadas com sucesso! Obrigada por participar 💛")
-            except Exception as e:
-                st.error(f"Erro ao salvar na planilha: {e}")
-        else:
-            st.warning("Por favor, preencha todos os campos antes de enviar.")
+            sheet.append_row(data)
+
+            st.session_state.respostas_enviadas = True
+            st.success("Respostas enviadas com sucesso! Obrigada por participar 💛")
+        except Exception as e:
+            st.error(f"Erro ao salvar na planilha: {e}")
+    else:
+        st.warning("Por favor, preencha todos os campos antes de enviar.")
+
+
+     
 
 
 
