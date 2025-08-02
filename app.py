@@ -128,49 +128,49 @@ elif st.session_state.pagina == total_paginas + 1:
 
     st.markdown("---")
 
-        if st.button("📨 Enviar respostas"):
-    nome = st.session_state.get("nome", "")
-    email = st.session_state.get("email", "")
-    celular = st.session_state.get("celular", "")
-    if nome and email and celular and all(r in opcoes_freq for r in st.session_state.respostas_comportamento):
-        try:
-            scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-            secret_dict = st.secrets["gcp_service_account"]
-            creds = ServiceAccountCredentials.from_json_keyfile_dict(secret_dict, scope)
-            client = gspread.authorize(creds)
-            sheet = client.open("Raio-X Comportamental - Respostas").sheet1
+         if st.button("📨 Enviar respostas"):
+            nome = st.session_state.get("nome", "")
+            email = st.session_state.get("email", "")
+            celular = st.session_state.get("celular", "")
+            if nome and email and celular and all(r in opcoes_freq for r in st.session_state.respostas_comportamento):
+            try:
+                scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+                secret_dict = st.secrets["gcp_service_account"]
+                creds = ServiceAccountCredentials.from_json_keyfile_dict(secret_dict, scope)
+                client = gspread.authorize(creds)
+                sheet = client.open("Raio-X Comportamental - Respostas").sheet1
 
-            valores = {"Nunca": 0, "Às vezes": 1, "Frequentemente": 2, "Quase sempre": 3}
-            respostas_numericas = [valores[r] for r in st.session_state.respostas_comportamento]
+                valores = {"Nunca": 0, "Às vezes": 1, "Frequentemente": 2, "Quase sempre": 3}
+                respostas_numericas = [valores[r] for r in st.session_state.respostas_comportamento]
 
-            categorias = {
-                "Fome Emocional": [1, 9, 14, 15, 16, 17],
-                "Comer por Influência Externa": [0, 2, 4, 6, 7, 12, 20, 22],
-                "Autocontrole e Valores": [3, 5, 8, 10, 11, 13]
-            }
+                categorias = {
+                    "Fome Emocional": [1, 9, 14, 15, 16, 17],
+                    "Comer por Influência Externa": [0, 2, 4, 6, 7, 12, 20, 22],
+                    "Autocontrole e Valores": [3, 5, 8, 10, 11, 13]
+                }
 
-            medias = {}
-            for categoria, indices in categorias.items():
-                respostas_cat = [respostas_numericas[i] for i in indices]
-                media = sum(respostas_cat) / len(respostas_cat)
-                medias[categoria] = round(media, 1)
+                medias = {}
+                for categoria, indices in categorias.items():
+                    respostas_cat = [respostas_numericas[i] for i in indices]
+                    media = sum(respostas_cat) / len(respostas_cat)
+                    medias[categoria] = round(media, 1)
 
-            data = [
-                datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-                nome, email, celular
-            ] + st.session_state.respostas_comportamento + st.session_state.respostas_pensamentos + [
-                medias["Fome Emocional"],
-                medias["Comer por Influência Externa"],
-                medias["Autocontrole e Valores"]
-            ]
+                data = [
+                    datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+                    nome, email, celular
+                ] + st.session_state.respostas_comportamento + st.session_state.respostas_pensamentos + [
+                    medias["Fome Emocional"],
+                    medias["Comer por Influência Externa"],
+                    medias["Autocontrole e Valores"]
+                ]
 
-            sheet.append_row(data)
-            st.session_state.respostas_enviadas = True
-            st.success("Respostas enviadas com sucesso! Obrigada por participar 💛")
-        except Exception as e:
-            st.error(f"Erro ao salvar na planilha: {e}")
-    else:
-        st.warning("Por favor, preencha todos os campos antes de enviar.")
+                sheet.append_row(data)
+                st.session_state.respostas_enviadas = True
+                st.success("Respostas enviadas com sucesso! Obrigada por participar 💛")
+            except Exception as e:
+                st.error(f"Erro ao salvar na planilha: {e}")
+        else:
+            st.warning("Por favor, preencha todos os campos antes de enviar.")
 
 
 
