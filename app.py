@@ -131,24 +131,44 @@ elif st.session_state.pagina == total_paginas + 1:
     if st.button("📨 Enviar respostas"):
         if nome and email and celular:
             try:
-                 # Dados principais
-                data = [
-                    nome,
-                    email,
-                    celular,
-                    *st.session_state.respostas_comportamento,
-                    *st.session_state.respostas_pensamentos,
-                    media_fome_emocional,
-                    media_comer_externo,
-                    media_autocontrole
-                ]
+                scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+                secret_dict = st.secrets["gcp_service_account"]
+                creds = ServiceAccountCredentials.from_json_keyfile_dict(secret_dict, scope)
+                client = gspread.authorize(creds)
+
+                sheet = client.open("Raio-X Comportamental - Respostas").sheet1
+
+                # Converter respostas para pontuações numéricas
+                valores = {"Nunca": 0, "Às vezes": 1, "Frequentemente": 2, "Quase sempre": 3}
+                respostas_numericas = [valores[r] for r in st.session_state.respostas_comportamento]
+
+                categorias = {
+                    "Fome Emocional": [1, 9, 14, 15, 16, 17],
+                    "Comer por Influência Externa": [0, 2, 4, 6, 7, 12, 20, 22],
+                    "Autocontrole e Valores": [3, 5, 8, 10, 11, 13]
+                }
+
+                medias_categorias = []
+                for indices in categorias.values():
+                    respostas_cat = [respostas_numericas[i] for i in indices]
+                    media = sum(respostas_cat) / len(respostas_cat)
+                    medias_categorias.append(round(media, 2))
+
+                # Preparar dados da linha
+                data = [datetime.now().strftime("%d/%m/%Y %H:%M:%S"), nome, email, celular]
+                data += medias_categorias
+                data += st.session_state.respostas_comportamento
+                data += st.session_state.respostas_pensamentos
+
                 sheet.append_row(data)
-                st.success("Respostas enviadas com sucesso!")
-                st.session_state.resultado_mostrado = True
+
+                st.session_state.respostas_enviadas = True
+                st.success("Respostas enviadas com sucesso! Obrigada por participar 💛")
             except Exception as e:
-                st.error("Erro ao enviar as respostas. Verifique sua conexão ou tente novamente.")
+                st.error(f"Erro ao salvar na planilha: {e}")
         else:
-            st.warning("Por favor, preencha nome, e-mail e celular antes de enviar.")
+            st.warning("Por favor, preencha todos os campos antes de enviar.")
+
 
 
 
