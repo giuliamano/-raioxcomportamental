@@ -138,32 +138,27 @@ elif st.session_state.pagina == total_paginas + 1:
 
             sheet = client.open("Raio-X Comportamental - Respostas").sheet1
 
-            # Verificar e escrever cabeçalho, se ainda não existir
-            if sheet.row_count == 0 or sheet.cell(1, 1).value == '':
-                header = ["Data e Hora", "Nome", "Email", "Celular"]
-                header += [f"Pergunta {i+1}" for i in range(len(perguntas_comportamento))]
-                header += [f"Pensamento {i+1}" for i in range(len(pensamentos_sabotadores))]
-                header += ["Fome Emocional", "Comer por Influência Externa", "Autocontrole e Valores"]
-                sheet.insert_row(header, 1)
-
-            # Calcular médias por categoria
+            # Converter respostas para pontuações numéricas
             valores = {"Nunca": 0, "Às vezes": 1, "Frequentemente": 2, "Quase sempre": 3}
             respostas_numericas = [valores[r] for r in st.session_state.respostas_comportamento]
+
             categorias = {
                 "Fome Emocional": [1, 9, 14, 15, 16, 17],
                 "Comer por Influência Externa": [0, 2, 4, 6, 7, 12, 20, 22],
                 "Autocontrole e Valores": [3, 5, 8, 10, 11, 13]
             }
-            medias = [
-                round(sum([respostas_numericas[i] for i in indices]) / len(indices), 1)
-                for indices in categorias.values()
-            ]
 
-            # Montar linha de dados
+            medias_categorias = []
+            for indices in categorias.values():
+                respostas_cat = [respostas_numericas[i] for i in indices]
+                media = sum(respostas_cat) / len(respostas_cat)
+                medias_categorias.append(round(media, 2))
+
+            # Preparar dados da linha
             data = [datetime.now().strftime("%d/%m/%Y %H:%M:%S"), nome, email, celular]
+            data += medias_categorias
             data += st.session_state.respostas_comportamento
             data += st.session_state.respostas_pensamentos
-            data += medias
 
             sheet.append_row(data)
 
@@ -174,8 +169,6 @@ elif st.session_state.pagina == total_paginas + 1:
     else:
         st.warning("Por favor, preencha todos os campos antes de enviar.")
 
-
-     
 
 
 
